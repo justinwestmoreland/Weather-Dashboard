@@ -13,29 +13,29 @@ $("#date3").text(date3);
 $("#date4").text(date4);
 $("#date5").text(date5);
 
+// This function updates data displayed for the current weather conditions from our API.
 
-
+// !!!! Need to find out how to get var currentImg to update the icon id rather than being hard coded. !!!!!!!
 function updateDisplay(weatherData) {
     var currentTemp = weatherData.main.temp;
     var currentHumidity = weatherData.main.humidity;
-    // Find out how to put weatherData.weather.icon where this 10d is. 
     var currentImg = 'http://openweathermap.org/img/w/10d.png'
     var currentWindSpeed = weatherData.wind.speed;
-    var currentUVIndex = weatherData
+    var cityName = weatherData.name;
 
-    // console.log(currentTemp);
-    // console.log(currentHumidity);
     document.getElementById('current-temp').textContent = currentTemp;
     document.getElementById('current-humidity').textContent = currentHumidity;
     document.getElementById('current-img').src = currentImg;
     document.getElementById('current-wind').textContent = currentWindSpeed;
-    document.getElementById('current-city').textContent = testCity;
+    document.getElementById('current-city').textContent = cityName;
     return
 };
 
+// This function updates data displayed for the forecasted weather conditions from our API.
+
+// !!!! Need to find out how to get images to update the icon id rather than being hard coded. !!!!!!!
 function updateForecastDisplay(forecastData) {
     forecastData = JSON.parse(forecastData);
-
     // Day 1 Information
     var day1Temp = forecastData.list[2].main.temp;
     var day1Img = 'http://openweathermap.org/img/w/04d.png';
@@ -75,64 +75,84 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('temp5').textContent = day5Temp;
     document.getElementById('img5').src = day5Img;
     document.getElementById('humidity5').textContent = day5Hum;
-
-
-
-
     return
 }
 
-// Current Weather
-var testCity = 'Boston';
-fetch('http://api.openweathermap.org/data/2.5/weather?q=' + testCity + '&APPID=de6cda6ee489e5192ad8edc5d0f21166&units=imperial')
-    .then(response => response.json())
-    .then(data => {
-        if (data) {
-            weatherForecast(data.id)
-            updateDisplay(data);
-        }
-        return;
+// This function updates UV data displayed for the forecasted weather conditions by calling a third API using the lat and lon from
+// the original API data.
 
-    })
+function updateUV(oneCallResults) {
+    oneCallResults = JSON.parse(oneCallResults)
 
-function weatherForecast(cityId) {
+    var currentUV = oneCallResults.current.uvi;
+    document.getElementById("current-uv-index").textContent = currentUV;
+}
+
+// This API is fetched to capture the current weather data, as well as gather the data for the forecast and UV index API calls.
+// var testCity = "Denver";
+
+function getWeather(testCity) {
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     };
 
+    fetch("http://api.openweathermap.org/data/2.5/weather?q=" + testCity + "&APPID=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            if (result) {
+                result = JSON.parse(result)
+                weatherForecast(result.id)
+                updateDisplay(result);
+                uvIndex(result.coord.lat, result.coord.lon);
+            }
+            return;
+
+        })
+        .catch(error => console.log('error', error));
+
+}
+
+// This function calls the weather forecast data using the cityID from the previous API call
+function weatherForecast(cityId) {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
     fetch("http://api.openweathermap.org/data/2.5/forecast?id=" + cityId + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
         .then(response => response.text())
         .then(result => {
             updateForecastDisplay(result)
         })
-
-    .catch(error => console.log('error', error));
+        .catch(error => console.log('error', error));
 }
 
-// api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={API key}
+// This function calls the UVIndex data using the lat and lon from the previous API call
+function uvIndex(lat, lon) {
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            updateUV(result)
+        })
+        .catch(error => console.log('error', error));
+}
 
-// 5 Day Forecast
-// fetch('http:api.openweathermap.org/data/2.5/forecast?q=' + testCity + '&appid=de6cda6ee489e5192ad8edc5d0f21166')
-//     .then(response => response.json())
-//     .then(data => console.log(data))
-
+/// I don't know how to do this. You need to figure this ish out. How do you search and then get this stuff to auto update. 
 var cityName = document.getElementById('city-name');
 var searchButton = document.getElementById('search-button');
 var newCity = document.createElement('li'); // li
 var searchList = document.querySelector('ul'); // ul
 
-/// I don't know how to do this. You need to figure this ish out. How do you search and then get this stuff to auto update. 
 
 function startSearch() {
-    console.log(cityName.value);
     newCity.textContent = cityName.value;
-    console.log(newCity.textContent);
     newCity.classList.add('cities');
-    console.log(newCity);
-    console.log(searchList);
     searchList.prepend(newCity);
+    getWeather(cityName.value);
 }
 
 searchButton.addEventListener("click", startSearch);
-// });
