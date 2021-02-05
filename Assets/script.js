@@ -19,7 +19,7 @@ $("#date5").text(date5);
 function updateDisplay(weatherData) {
     var currentTemp = weatherData.main.temp;
     var currentHumidity = weatherData.main.humidity;
-    var currentImg = 'http://openweathermap.org/img/w/10d.png'
+    var currentImg = 'https://openweathermap.org/img/w/10d.png'
     var currentWindSpeed = weatherData.wind.speed;
     var cityName = weatherData.name;
 
@@ -38,7 +38,7 @@ function updateForecastDisplay(forecastData) {
     forecastData = JSON.parse(forecastData);
     // Day 1 Information
     var day1Temp = forecastData.list[2].main.temp;
-    var day1Img = 'http://openweathermap.org/img/w/04d.png';
+    var day1Img = 'https://openweathermap.org/img/w/04d.png';
     var day1Hum = forecastData.list[2].main.humidity;
     document.getElementById('temp1').textContent = day1Temp;
     document.getElementById('img1').src = day1Img;
@@ -46,7 +46,7 @@ function updateForecastDisplay(forecastData) {
 
     // Day 2 Information
     var day2Temp = forecastData.list[10].main.temp;
-    var day2Img = 'http://openweathermap.org/img/w/04d.png';
+    var day2Img = 'https://openweathermap.org/img/w/04d.png';
     var day2Hum = forecastData.list[10].main.humidity;
     document.getElementById('temp2').textContent = day2Temp;
     document.getElementById('img2').src = day2Img;
@@ -54,7 +54,7 @@ function updateForecastDisplay(forecastData) {
 
     // Day 3 Information
     var day3Temp = forecastData.list[18].main.temp;
-    var day3Img = 'http://openweathermap.org/img/w/04d.png';
+    var day3Img = 'https://openweathermap.org/img/w/04d.png';
     var day3Hum = forecastData.list[18].main.humidity;
     document.getElementById('temp3').textContent = day3Temp;
     document.getElementById('img3').src = day3Img;
@@ -62,7 +62,7 @@ function updateForecastDisplay(forecastData) {
 
     // Day 4 Information
     var day4Temp = forecastData.list[26].main.temp;
-    var day4Img = 'http://openweathermap.org/img/w/04d.png';
+    var day4Img = 'https://openweathermap.org/img/w/04d.png';
     var day4Hum = forecastData.list[26].main.humidity;
     document.getElementById('temp4').textContent = day4Temp;
     document.getElementById('img4').src = day4Img;
@@ -70,7 +70,7 @@ function updateForecastDisplay(forecastData) {
 
     // Day 5 Information
     var day5Temp = forecastData.list[34].main.temp;
-    var day5Img = 'http://openweathermap.org/img/w/04d.png';
+    var day5Img = 'https://openweathermap.org/img/w/04d.png';
     var day5Hum = forecastData.list[34].main.humidity;
     document.getElementById('temp5').textContent = day5Temp;
     document.getElementById('img5').src = day5Img;
@@ -97,7 +97,7 @@ function getWeather(testCity) {
         redirect: 'follow'
     };
 
-    fetch("http://api.openweathermap.org/data/2.5/weather?q=" + testCity + "&APPID=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + testCity + "&APPID=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
         .then(response => response.text())
         .then(result => {
             if (result) {
@@ -119,7 +119,7 @@ function weatherForecast(cityId) {
         method: 'GET',
         redirect: 'follow'
     };
-    fetch("http://api.openweathermap.org/data/2.5/forecast?id=" + cityId + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
+    fetch("https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
         .then(response => response.text())
         .then(result => {
             updateForecastDisplay(result)
