@@ -35,9 +35,6 @@ function updateDisplay(weatherData) {
 function updateForecastDisplay(forecastData) {
     forecastData = JSON.parse(forecastData);
 
-    var currentUV = forecastData.current.uvi;
-    document.getElementById("current-uv-index").textContent = currentUV;
-
     // Day 1 Information
     var day1Temp = forecastData.daily[0].temp.max;
     var day1Img = 'https://openweathermap.org/img/w/' + forecastData.daily[0].weather[0].icon + '.png';
@@ -77,20 +74,26 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('temp5').textContent = day5Temp;
     document.getElementById('img5').src = day5Img;
     document.getElementById('humidity5').textContent = day5Hum;
+}
 
-    // When I turn this on, my forecast breaks... WTF. Do I have to move this all under one function?
-    // if (currentUV < 3) {
-    //     var greenUV = document.getElementById("current-uv-index");
-    //     greenUV.setAttribute('id', 'green');
-    // } else if (currentUV >= 3 && currentUV < 6) {
-    //     var yellowUV = document.getElementById("current-uv-index");
-    //     yellowUV.setAttribute('id', 'yellow');
-    // } else {
-    //     var redUV = document.getElementById("current-uv-index");
-    //     redUV.setAttribute('id', 'red');
-    // };
+function uvColors(uvValue) {
+    uvValue = JSON.parse(uvValue);
+    var currentUV = uvValue.current.uvi;
+    console.log("1", currentUV);
+    document.getElementsByClassName("uv-index")[0].textContent = currentUV;
+    console.log("2", currentUV);
 
-    return;
+    if (currentUV < 3) {
+        var greenUV = document.getElementsByClassName("uv-index");
+        greenUV[0].setAttribute('id', 'green');
+    } else if (currentUV >= 3 && currentUV < 6) {
+        var yellowUV = document.getElementsByClassName("uv-index");
+        yellowUV[0].setAttribute('id', 'yellow');
+    } else {
+        var redUV = document.getElementsByClassName("uv-index");
+        redUV[0].setAttribute('id', 'red');
+    };
+
 }
 
 // Default when page loads is Denver, CO
@@ -130,7 +133,8 @@ function uvIndex(lat, lon) {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
         .then(response => response.text())
         .then(result => {
-            updateForecastDisplay(result);
+            updateForecastDisplay(result)
+            uvColors(result)
         })
         .catch(error => console.log('error', error));
 }
@@ -158,14 +162,7 @@ function renderCityList() {
         newCity.textContent = searchHistory[i];
         newCity.classList.add('cities');
         searchList.prepend(newCity);
-        // var newCity = document.createElement('button'); // li
-        // newCity.textContent = searchHistory[i];
-        // newCity.classList.add('cities');
-        // searchList.prepend(newCity.textContent);
     }
-
-    // add new city names to the top of the list when the search button is clicked 
-
 }
 
 
