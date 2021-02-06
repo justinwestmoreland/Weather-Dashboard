@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="Assets/favicon-32x32.png" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="Assets/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Mega&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 </head>
 
@@ -35,7 +37,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div id="left-box" class="col-md-3">
 
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" id="city-name" placeholder="City" aria-label="City" aria-describedby="button-addon2">
@@ -48,16 +50,16 @@
             </div>
 
             <div class="col-md-9">
-                <div class="row">
+                <div id="right-box" class="row">
                     <div class="col-md-8">
                         <!-- Update the date with moment.js -->
                         <p> <span id="current-city"></span></p>
                         <p> <span id="current-date"></span></p>
                         <p> <img id="current-img" src=""></p>
-                        <p> Current temperature: <span id="current-temp"></span> &#176F</p>
-                        <p> Current Humidity: <span id="current-humidity"></span>%</p>
-                        <p> Current Wind Speed: <span id="current-wind"></span> MPH</p>
-                        <p> Current UV Index: <span id="current-uv-index"></span></p>
+                        <p class="current"> Current temperature: <span class="number" id="current-temp"></span> &#176F</p>
+                        <p class="current"> Current Humidity: <span class="number" id="current-humidity"></span>%</p>
+                        <p class="current"> Current Wind Speed: <span class="number" id="current-wind"></span> MPH</p>
+                        <p class="current"> Current UV Index: <span class="number" id="current-uv-index"></span></p>
 
                         <!-- <div class="card" style="width: 18rem;">
                         <div class="card-body">
@@ -68,37 +70,37 @@
                     </div> -->
                     </div>
                 </div>
-                <div class="row">5-Day Forecast</div>
-                <div class="row">
+                <div id="forecast-text" class="row">5-Day Forecast</div>
+                <div id="forecast-img" class="row">
                     <div class="col-md-2">
                         <p> <span id="date1"></span></p>
                         <p> <img id="img1" src=""></p>
                         <p>Temp: <span id="temp1"> </span> &#176F</p>
-                        <p> <span id="humidity1"></span>%</p>
+                        <p>Humidity: <span id="humidity1"></span>%</p>
                     </div>
                     <div class="col-md-2">
                         <p> <span id="date2"></span></p>
                         <p> <img id="img2" src=""></p>
                         <p>Temp: <span id="temp2"></span> &#176F</p>
-                        <p> <span id="humidity2"></span>%</p>
+                        <p>Humidity: <span id="humidity2"></span>%</p>
                     </div>
                     <div class="col-md-2">
                         <p> <span id="date3"></span></p>
                         <p> <img id="img3" src=""></p>
                         <p>Temp: <span id="temp3"></span> &#176F</p>
-                        <p> <span id="humidity3"></span>%</p>
+                        <p>Humidity: <span id="humidity3"></span>%</p>
                     </div>
                     <div class="col-md-2">
                         <p> <span id="date4"></span></p>
                         <p> <img id="img4" src=""></p>
                         <p>Temp: <span id="temp4"></span> &#176F</p>
-                        <p> <span id="humidity4"></span>%</p>
+                        <p>Humidity: <span id="humidity4"></span>%</p>
                     </div>
                     <div class="col-md-2">
                         <p> <span id="date5"></span></p>
                         <p> <img id="img5" src=""></p>
                         <p>Temp: <span id="temp5"></span> &#176F</p>
-                        <p> <span id="humidity5"></span>%</p>
+                        <p>Humidity: <span id="humidity5"></span>%</p>
                     </div>
                 </div>
 

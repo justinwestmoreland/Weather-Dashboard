@@ -89,6 +89,7 @@ function updateUV(oneCallResults) {
 }
 
 // This API is fetched to capture the current weather data, as well as gather the data for the forecast and UV index API calls.
+getWeather('denver')
 
 function getWeather(testCity) {
     var requestOptions = {
