@@ -116,7 +116,8 @@ function getWeather(testCity) {
             }
             return;
         })
-        .catch(error => console.log('error', error));
+        .catch(error => console.log('error', error))
+        .finally(() => { renderCityList() })
 
 }
 
@@ -139,24 +140,48 @@ var cityName = document.getElementById('city-name');
 var searchButton = document.getElementById('search-button');
 var cityHistory = document.querySelector('cities')
 var searchList = document.querySelector('ul'); // ul
+var newCity = document.querySelector('li');
 var searchHistory = JSON.parse(window.localStorage.getItem('Search History')) || [];
 
 function startSearch() {
-    var newCity = document.createElement('li'); // li
-    newCity.textContent = searchHistory[i];
-    newCity.classList.add('cities');
-    searchList.prepend(newCity);
     searchHistory.push(cityName.value);
     localStorage.setItem('Search History', JSON.stringify(searchHistory));
     getWeather(cityName.value);
 
-    for (var i = 0; i < searchHistory.length; i++) {}
-    // var newCity = document.createElement('button'); // li
-    // newCity.textContent = searchHistory[i];
-    // newCity.classList.add('cities');
-    // searchList.prepend(newCity.textContent);
+}
+
+function renderCityList() {
+    searchList.innerHTML = "";
+    // get info from local storage when the page loads
+    for (var i = 0; i < searchHistory.length; i++) {
+        newCity = document.createElement('li'); // li
+        newCity.textContent = searchHistory[i];
+        newCity.classList.add('cities');
+        searchList.prepend(newCity);
+        // var newCity = document.createElement('button'); // li
+        // newCity.textContent = searchHistory[i];
+        // newCity.classList.add('cities');
+        // searchList.prepend(newCity.textContent);
+    }
+
+    // add new city names to the top of the list when the search button is clicked 
+
+}
+
+
+function getLocalStorage() {
+    if (searchHistory.length > 0) {
+        renderCityList();
+    }
+}
+
+function startSearchOldCity() {
+    testCity = this.textContent;
+    startSearch();
 }
 
 
 
+
 searchButton.addEventListener('click', startSearch);
+// newCity.addEventListener('click', startSearchOldCity);
