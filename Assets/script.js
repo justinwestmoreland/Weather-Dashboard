@@ -179,6 +179,5 @@ function startSearchOldCity() {
 
 
 
-
 searchButton.addEventListener('click', startSearch);
 // newCity.addEventListener('click', startSearchOldCity);
