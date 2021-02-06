@@ -34,8 +34,12 @@ function updateDisplay(weatherData) {
 
 function updateForecastDisplay(forecastData) {
     forecastData = JSON.parse(forecastData);
+
+    var currentUV = forecastData.current.uvi;
+    document.getElementById("current-uv-index").textContent = currentUV;
+
     // Day 1 Information
-    var day1Temp = forecastData.daily[0].temp.day;
+    var day1Temp = forecastData.daily[0].temp.max;
     var day1Img = 'https://openweathermap.org/img/w/' + forecastData.daily[0].weather[0].icon + '.png';
     var day1Hum = forecastData.daily[0].humidity;
     document.getElementById('temp1').textContent = day1Temp;
@@ -43,7 +47,7 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('humidity1').textContent = day1Hum;
 
     // Day 2 Information
-    var day2Temp = forecastData.daily[1].temp.day;
+    var day2Temp = forecastData.daily[1].temp.max;
     var day2Img = 'https://openweathermap.org/img/w/' + forecastData.daily[1].weather[0].icon + '.png';
     var day2Hum = forecastData.daily[1].humidity;
     document.getElementById('temp2').textContent = day2Temp;
@@ -51,7 +55,7 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('humidity2').textContent = day2Hum;
 
     // // Day 3 Information
-    var day3Temp = forecastData.daily[2].temp.day;
+    var day3Temp = forecastData.daily[2].temp.max;
     var day3Img = 'https://openweathermap.org/img/w/' + forecastData.daily[2].weather[0].icon + '.png';
     var day3Hum = forecastData.daily[2].humidity;
     document.getElementById('temp3').textContent = day3Temp;
@@ -59,7 +63,7 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('humidity3').textContent = day3Hum;
 
     // // Day 4 Information
-    var day4Temp = forecastData.daily[3].temp.day;
+    var day4Temp = forecastData.daily[3].temp.max;
     var day4Img = 'https://openweathermap.org/img/w/' + forecastData.daily[3].weather[0].icon + '.png';
     var day4Hum = forecastData.daily[3].humidity;
     document.getElementById('temp4').textContent = day4Temp;
@@ -67,38 +71,34 @@ function updateForecastDisplay(forecastData) {
     document.getElementById('humidity4').textContent = day4Hum;
 
     // // Day 5 Information
-    var day5Temp = forecastData.daily[4].temp.day;
+    var day5Temp = forecastData.daily[4].temp.max;
     var day5Img = 'https://openweathermap.org/img/w/' + forecastData.daily[4].weather[0].icon + '.png';
     var day5Hum = forecastData.daily[4].humidity;
     document.getElementById('temp5').textContent = day5Temp;
     document.getElementById('img5').src = day5Img;
     document.getElementById('humidity5').textContent = day5Hum;
-    return
+
+    // When I turn this on, my forecast breaks... WTF. Do I have to move this all under one function?
+    // if (currentUV < 3) {
+    //     var greenUV = document.getElementById("current-uv-index");
+    //     greenUV.setAttribute('id', 'green');
+    // } else if (currentUV >= 3 && currentUV < 6) {
+    //     var yellowUV = document.getElementById("current-uv-index");
+    //     yellowUV.setAttribute('id', 'yellow');
+    // } else {
+    //     var redUV = document.getElementById("current-uv-index");
+    //     redUV.setAttribute('id', 'red');
+    // };
+
+    return;
 }
 
-// This function updates UV data displayed for the forecasted weather conditions by calling a second API using the lat and lon from
-// the original API data.
-
-function updateUV(oneCallResults) {
-    oneCallResults = JSON.parse(oneCallResults)
-    var currentUV = oneCallResults.current.uvi;
-    document.getElementById("current-uv-index").textContent = currentUV;
-
-    if (currentUV < 3) {
-        var greenUV = document.getElementById("current-uv-index");
-        greenUV.setAttribute('id', 'green');
-    } else if (currentUV >= 3 && currentUV < 6) {
-        var yellowUV = document.getElementById("current-uv-index");
-        yellowUV.setAttribute('id', 'yellow');
-    } else {
-        var redUV = document.getElementById("current-uv-index");
-        redUV.setAttribute('id', 'red');
-    }
-
-}
+// Default when page loads is Denver, CO
+var testCity = "Denver";
+getWeather(testCity);
 
 // This API is fetched to capture the current weather data, as well as gather the data for the forecast and UV index API calls.
-getWeather('denver')
+// getWeather(cityName.value)
 
 function getWeather(testCity) {
     var requestOptions = {
@@ -129,7 +129,6 @@ function uvIndex(lat, lon) {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=de6cda6ee489e5192ad8edc5d0f21166&units=imperial", requestOptions)
         .then(response => response.text())
         .then(result => {
-            updateUV(result);
             updateForecastDisplay(result);
         })
         .catch(error => console.log('error', error));
