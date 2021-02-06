@@ -34,7 +34,6 @@ function updateDisplay(weatherData) {
 
 function updateForecastDisplay(forecastData) {
     forecastData = JSON.parse(forecastData);
-    console.log("forecast Data", forecastData);
     // Day 1 Information
     var day1Temp = forecastData.daily[0].temp.day;
     var day1Img = 'https://openweathermap.org/img/w/' + forecastData.daily[0].weather[0].icon + '.png';
@@ -82,10 +81,20 @@ function updateForecastDisplay(forecastData) {
 
 function updateUV(oneCallResults) {
     oneCallResults = JSON.parse(oneCallResults)
-    console.log("one call results", oneCallResults);
-
     var currentUV = oneCallResults.current.uvi;
     document.getElementById("current-uv-index").textContent = currentUV;
+
+    if (currentUV < 3) {
+        var greenUV = document.getElementById("current-uv-index");
+        greenUV.setAttribute('id', 'green');
+    } else if (currentUV >= 3 && currentUV < 6) {
+        var yellowUV = document.getElementById("current-uv-index");
+        yellowUV.setAttribute('id', 'yellow');
+    } else {
+        var redUV = document.getElementById("current-uv-index");
+        redUV.setAttribute('id', 'red');
+    }
+
 }
 
 // This API is fetched to capture the current weather data, as well as gather the data for the forecast and UV index API calls.
@@ -102,13 +111,10 @@ function getWeather(testCity) {
         .then(result => {
             if (result) {
                 result = JSON.parse(result)
-                console.log(result);
-                // weatherForecast(result.id)
                 updateDisplay(result);
                 uvIndex(result.coord.lat, result.coord.lon);
             }
             return;
-
         })
         .catch(error => console.log('error', error));
 
@@ -135,8 +141,6 @@ var searchButton = document.getElementById('search-button');
 var cityHistory = document.querySelector('cities')
 var searchList = document.querySelector('ul'); // ul
 var searchHistory = JSON.parse(window.localStorage.getItem('Search History')) || [];
-
-
 
 function startSearch() {
     var newCity = document.createElement('li'); // li
