@@ -79,9 +79,7 @@ function updateForecastDisplay(forecastData) {
 function uvColors(uvValue) {
     uvValue = JSON.parse(uvValue);
     var currentUV = uvValue.current.uvi;
-    console.log("1", currentUV);
     document.getElementsByClassName("uv-index")[0].textContent = currentUV;
-    console.log("2", currentUV);
 
     if (currentUV < 3) {
         var greenUV = document.getElementsByClassName("uv-index");
@@ -139,7 +137,6 @@ function uvIndex(lat, lon) {
         .catch(error => console.log('error', error));
 }
 
-/// I don't know how to do this. You need to figure this ish out. How do you search and then get this stuff to auto update. 
 var cityName = document.getElementById('city-name');
 var searchButton = document.getElementById('search-button');
 var cityHistory = document.querySelector('cities')
@@ -156,7 +153,6 @@ function startSearch() {
 
 function renderCityList() {
     searchList.innerHTML = "";
-    // get info from local storage when the page loads
     for (var i = 0; i < searchHistory.length; i++) {
         newCity = document.createElement('li'); // li
         newCity.textContent = searchHistory[i];
@@ -164,7 +160,6 @@ function renderCityList() {
         searchList.prepend(newCity);
     }
 }
-
 
 function getLocalStorage() {
     if (searchHistory.length > 0) {
@@ -176,8 +171,4 @@ function startSearchOldCity() {
     testCity = this.textContent;
     startSearch();
 }
-
-
-
 searchButton.addEventListener('click', startSearch);
-// newCity.addEventListener('click', startSearchOldCity);
