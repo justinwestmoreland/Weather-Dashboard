@@ -16,4 +16,4 @@ If users accidentally navigate away from the page or refresh, all search results
 
 Enjoy my website!
 
-![landing page screenshot](assets/landingpage.png)
+![landing page screenshot](./Assets/landingpage.png)
